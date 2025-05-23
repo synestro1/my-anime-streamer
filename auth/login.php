@@ -19,14 +19,16 @@ if(isset($_POST['submit'])) {
         $email = $_POST['email'];
         $password = $_POST['password']; 
 
-        $login = $conn->query("SELECT * FROM users WHERE email='$email'");
+        // Use prepared statements to prevent SQL injection
+        $login = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $login->bindParam(':email', $email);
         $login->execute();
         
         $fetch = $login->fetch(PDO::FETCH_ASSOC);
 
         if($login->rowCount() > 0) {
 
-            if(password_verify($password, $fetch['password'])) {
+            if(password_verify($password, $fetch['password_hash'])) { // Use password_hash
                 //start sessions
 
                 $_SESSION['username'] = $fetch['username'];
@@ -73,16 +75,16 @@ if(isset($_POST['submit'])) {
                 <div class="col-lg-6">
                     <div class="login__form">
                         <h3>Login</h3>
-                        <form action="#">
+                        <form action="login.php" method="POST">
                             <div class="input__item">
-                            <input type="text" name="email" placeholder="Email address">
+                            <input type="text" name="email" placeholder="Email address" required>
                             <span class="icon_mail"></span>
                             </div>
                             <div class="input__item">
-                                <input type="text" name="password" placeholder="Password">
+                                <input type="password" name="password" placeholder="Password" required>
                                 <span class="icon_lock"></span>
                             </div>
-                            <button type="submit" class="site-btn">Login Now</button>
+                            <button type="submit" name="submit" class="site-btn">Login Now</button>
                         </form>
                         <a href="#" class="forget_pass">Forgot Your Password?</a>
                     </div>
