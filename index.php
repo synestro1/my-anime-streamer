@@ -3,7 +3,7 @@
 <?php
 
 
-$shows = $conn->query("SELECT * FROM shows LIMIT 3");
+$shows = $conn->query("SELECT * FROM anime LIMIT 3");
 $shows->execute();
 
 $allshows = $shows->fetchAll(PDO::FETCH_OBJ);

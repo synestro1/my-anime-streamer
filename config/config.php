@@ -10,7 +10,7 @@ try{
     define('USER', 'root');
 
     //password
-    define('PASS', 'password'); // Updated password
+    define('PASS', ''); // Updated password
 
     $conn = new PDO("mysql:host=".HOST.";dbname=".DBNAME, USER, PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
